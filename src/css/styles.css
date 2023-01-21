@@ -1,0 +1,44 @@
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+:root {
+    --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-duration: 250ms;
+  }
+.search-form{ 
+    display: block;
+    align-content: center;
+    background-color: goldenrod;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 20px;}
+.gallery{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:baseline;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+img{display: block;
+    max-width: 100%;
+    height: auto;}
+
+.photo-card{
+    border: 1px solid black;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: calc((100% - 90px) / 4);
+}
+.load-more{
+    visibility: hidden;
+}
