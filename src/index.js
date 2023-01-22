@@ -1,4 +1,8 @@
-// Описаний в документації
+// // Описаний в документації
+// import SimpleLightbox from "simplelightbox";
+// // Додатковий імпорт стилів
+// import "simplelightbox/dist/simple-lightbox.min.css";
+
 import {fetchImage} from './js/class';
 import {Notify} from 'notiflix';
 
@@ -28,7 +32,7 @@ return saveValue = value;
     clearInput()
     page = 1;
 
-    if(!saveValue) return addHidden(), console.log('error!!'), Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
+    if(!saveValue) return Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
       timeout: 5000,
     };
     
@@ -40,25 +44,15 @@ return saveValue = value;
             timeout: 5000,
           };}
       // console.log(res);
-      createImg(res);
+      createImg(res)
+      btnNextSearchEl.style.display = 'block';
       Notify.success(`"Hooray! We found ${res.totalHits} images."`);
-      removeHidden();
+      //removeHidden();
     } catch (error) {
       
       console.log(error);
       
     }
-    
-    // fetchImage(saveValue, page).then(function(response) {
-    //     console.log(response.hits);
-    //     let arr = response.hits;
-    //     createImg(arr);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //   }); 
 };
 
 
@@ -95,12 +89,17 @@ async function onNextSearchClick (evt){
     page +=1;
     try {
       const res = await fetchImage(saveValue, page);
-    createImg(res);
-    } catch (error) {
+    createImg(res)
+    if( divBox.children.length >= res.totalHits){
+      btnNextSearchEl.style.display =  'none';
       Notify.failure("We're sorry, but you've reached the end of search results."), {
         timeout: 5000,
       };
-      console.log(error),addHidden();
+      
+      return
+    };
+    } catch (error) {
+      console.log(error)//addHidden();
     }
     
 };
@@ -111,6 +110,11 @@ function removeHidden(){
 function addHidden(){
   btnNextSearchEl.classList.add("is-hidden");
 }
+
+// let lightbox = new SimpleLightbox('.gallery a', { 
+//   captionsData: 'alt',
+//   captionDelay: 250,
+//   captionPosition: 'bottom'});
 
 
 
