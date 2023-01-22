@@ -1,5 +1,5 @@
 // Описаний в документації
-import {fetchImage} from './class';
+import {fetchImage} from './js/class';
 import {Notify} from 'notiflix';
 
 let inputEl = document.querySelector('#search-form');
@@ -28,7 +28,9 @@ return saveValue = value;
     clearInput()
     page = 1;
 
-    if(!saveValue) return addHidden(), console.log('error!!');
+    if(!saveValue) return addHidden(), console.log('error!!'), Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
+      timeout: 5000,
+    };
     
     try {
 
@@ -91,8 +93,16 @@ async function onNextSearchClick (evt){
     evt.preventDefault();
     // console.log(page);
     page +=1;
-    const res = await fetchImage(saveValue, page);
+    try {
+      const res = await fetchImage(saveValue, page);
     createImg(res);
+    } catch (error) {
+      Notify.failure("We're sorry, but you've reached the end of search results."), {
+        timeout: 5000,
+      };
+      console.log(error),addHidden();
+    }
+    
 };
 
 function removeHidden(){
