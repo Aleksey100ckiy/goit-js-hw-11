@@ -32,7 +32,7 @@ return saveValue = value;
     clearInput()
     page = 1;
 
-    if(!saveValue) return Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
+    if(!saveValue) return btnNextSearchEl.style.display =  'none', Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
       timeout: 5000,
     };
     
