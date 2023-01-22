@@ -1,9 +1,6 @@
 // Описаний в документації
-
-// import fetchImage from './class'
-
-// const KEY = '33003809-0ba39c85a11eed1272aa84bba';
-// const BASE_URL ='https://pixabay.com/api/';
+import {fetchImage} from './class';
+import {Notify} from 'notiflix';
 
 let inputEl = document.querySelector('#search-form');
 let btnEl = document.querySelector('.search-form')
@@ -25,54 +22,46 @@ return saveValue = value;
 
 };
 
-function fetchImage (inputName, page) {
-  const data = await axios.get('https://pixabay.com/api/', {
-      params: {...options, 
-          page,
-          q: inputName,
-      }
-  })
-  return data;
 
-};
-const resp = fetchImage(cat, 1).then((response)=> {
-  console.log(response);
-})
-.catch(function (error) {
-  console.log(error);
-})
-.then(function () {
-  // виконується завжди
-});  ;
-
-
-
-const resp = fetchImage(cat, 1).then((response)=> {
-  console.log(response);
-})
-.catch(function (error) {
-  console.log(error);
-})
-.then(function () {
-  // виконується завжди
-});  ;
-
-
-function onSubmit (e){
+ async function onSubmit (e){
     e.preventDefault();
+    clearInput()
     page = 1;
 
-    console.log(saveValue)
-    // fetchImage(saveValue, page)
-    // .then(data => {console.log(data.hits)
-    //     createImg (data.hits)})
-    // .catch(err => console.log(err));
+    if(!saveValue) return addHidden(), console.log('error!!');
+    
+    try {
 
+      const res = await fetchImage(saveValue, page);
+      if(!res.totalHits){
+        return Notify.failure("Sorry, there are no images matching your search query. Please try again."), {
+            timeout: 5000,
+          };}
+      // console.log(res);
+      createImg(res);
+      Notify.success(`"Hooray! We found ${res.totalHits} images."`);
+      removeHidden();
+    } catch (error) {
+      
+      console.log(error);
+      
+    }
+    
+    // fetchImage(saveValue, page).then(function(response) {
+    //     console.log(response.hits);
+    //     let arr = response.hits;
+    //     createImg(arr);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   })
+    //   .then(function () {
+    //   }); 
 };
 
 
 function createImg (arr){
-    const markup = arr.map((img) => `<div class="photo-card">
+    const markup = arr.hits.map((img) => `<div class="photo-card">
         <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" />
         <div class="info">
           <p class="info-item">
@@ -98,12 +87,20 @@ function clearInput(){
     divBox.innerHTML = empty;
 };
 
-function onNextSearchClick (evt){
+async function onNextSearchClick (evt){
     evt.preventDefault();
-    console.log(page);
-
+    // console.log(page);
+    page +=1;
+    const res = await fetchImage(saveValue, page);
+    createImg(res);
 };
 
+function removeHidden(){
+  btnNextSearchEl.classList.remove("is-hidden");
+}
+function addHidden(){
+  btnNextSearchEl.classList.add("is-hidden");
+}
 
 
 
@@ -116,11 +113,12 @@ function onNextSearchClick (evt){
 // пустий масив - повідомленя // "Sorry, there are no images matching your search query. Please try again."
 // накидати стилі ок
 // зробити скидання при новому сабміті ок
-// зробити пагінацію сторінок
-// зробити кнопку(ok), приховати(ok), розбудити, якщо кінець колекції - повідомлення  "We're sorry, but you've reached the end of search results."
+// зробити пагінацію сторінок (ок)
+// зробити кнопку(ok), приховати(ok), розбудити(ok), 
+// якщо кінець колекції - повідомлення  "We're sorry, but you've reached the end of search results."
 //  підключити галерею 
-// розібратись і зробити з асинк евейт запрос
-//  зробити нетфлікс всіх повідомлень 
+// розібратись і зробити з асинк евейт запрос  ok
+//  зробити нетфлікс всіх повідомлень ok( ще яке в кінці колекції)
 
 
 
@@ -175,3 +173,8 @@ function onNextSearchClick (evt){
 
 
 // https://pixabay.com/api/?key=33003809-0ba39c85a11eed1272aa84bba&q=${name}&image_type=photo&orientation=horizontal&safesearch=true
+
+// тест після IMG
+// .then(data => {console.log(data.hits)
+//   createImg (data.hits)})
+// .catch(err => console.log(err));

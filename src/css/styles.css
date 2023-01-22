@@ -11,7 +11,7 @@
 .search-form{ 
     display: block;
     align-content: center;
-    background-color: goldenrod;
+    background-color:darkblue ;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -39,6 +39,6 @@ img{display: block;
     height: auto;
     width: calc((100% - 90px) / 4);
 }
-.load-more{
-    /* visibility: hidden; */
+.is-hidden{
+    visibility: hidden;
 }
