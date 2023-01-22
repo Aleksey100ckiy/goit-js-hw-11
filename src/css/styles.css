@@ -40,5 +40,5 @@ img{display: block;
     width: calc((100% - 90px) / 4);
 }
 .load-more{
-    visibility: hidden;
+    /* visibility: hidden; */
 }
