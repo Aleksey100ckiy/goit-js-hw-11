@@ -1,6 +1,6 @@
 // Описаний в документації
 
-import fetchImage from './class'
+// import fetchImage from './class'
 
 // const KEY = '33003809-0ba39c85a11eed1272aa84bba';
 // const BASE_URL ='https://pixabay.com/api/';
@@ -22,6 +22,17 @@ function onSearchInput (event){
     
 let value = inputEl.elements.searchQuery.value
 return saveValue = value;
+
+};
+
+function fetchImage (inputName, page) {
+  const data = await axios.get('https://pixabay.com/api/', {
+      params: {...options, 
+          page,
+          q: inputName,
+      }
+  })
+  return data;
 
 };
 const resp = fetchImage(cat, 1).then((response)=> {
