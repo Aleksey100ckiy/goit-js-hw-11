@@ -24,6 +24,16 @@ let value = inputEl.elements.searchQuery.value
 return saveValue = value;
 
 };
+const resp = fetchImage(cat, 1).then((response)=> {
+  console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+})
+.then(function () {
+  // виконується завжди
+});  ;
+
 
 
 const resp = fetchImage(cat, 1).then((response)=> {
